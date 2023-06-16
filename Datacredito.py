@@ -49,7 +49,13 @@ class Datacredito():
             tree = ET.ElementTree(ET.fromstring(response))
             root = tree.getroot()
 
+            accounts = []
             for account in root.findall("./Informe/CuentaAhorro"):
-                print(account.attrib, '\n')
+                state = account.find('./Estado').attrib
+                account = account.attrib
+                accounts.append({ **account, **state })
+
+            # print(accounts, '\n')
+            return accounts
 
 # print('Consulta OK - XML \n', response)
