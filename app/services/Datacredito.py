@@ -3,7 +3,7 @@ from zeep import Client
 from zeep.transports import Transport
 from zeep.wsse.signature import Signature
 from zeep.wsse.username import UsernameToken
-from Signature import CustomSignature
+from services.Signature import CustomSignature
 from dotenv import load_dotenv
 
 import xml.etree.ElementTree as ET
@@ -44,18 +44,16 @@ class Datacredito():
         }
 
         response = self.client.service.consultarHC2(solicitud=payload)
+        accounts = []
 
         if 'respuesta="13"' in response:
             tree = ET.ElementTree(ET.fromstring(response))
             root = tree.getroot()
 
-            accounts = []
             for account in root.findall("./Informe/CuentaAhorro"):
                 state = account.find('./Estado').attrib
                 account = account.attrib
                 accounts.append({ **account, **state })
-
             # print(accounts, '\n')
-            return accounts
 
-# print('Consulta OK - XML \n', response)
+        return accounts
