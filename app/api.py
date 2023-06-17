@@ -1,16 +1,13 @@
 from flask import Flask
-from flask_restful import Resource, Api
-from services.Datacredito import Datacredito
+from flask_restful import Api
+from controllers.DatacreditoController import DatacreditoController
+from controllers.StatusController import StatusController
 
 app = Flask(__name__)
 api = Api(app)
 
-class DatacreditoController(Resource):
-    def get(self):
-        datacredito = Datacredito()
-        return datacredito.getAccounts('1', '1189213694', 'SANCHEZ')
-
-api.add_resource(DatacreditoController, '/')
+api.add_resource(StatusController, '/api/status')
+api.add_resource(DatacreditoController, '/api/financial/accounts')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug= True)
